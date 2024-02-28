@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.fmo.AppProdurtos.model.Estoque;
+import br.com.fmo.AppProdurtos.model.Produto;
 
 public interface EstoqueServiceInterface {
 
@@ -12,5 +13,10 @@ public interface EstoqueServiceInterface {
 	Optional<Estoque> getById(Long id);
 	List<Estoque> getAll();
 	Estoque update(Estoque estoque);
-	void delete(Long id);
+	void delete(Long id);	
+	Estoque addQuantidade(Produto produto, int quantidade);
+	Estoque delQuantidade(Produto produto, int quantidade);
+	List<Estoque> findEstoqueQuantidade(Integer quantidade);
+	List<Estoque> findEstoqueQuantidadeGreaterThan(Integer quantidade);
+	
 }

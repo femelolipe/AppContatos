@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fmo.AppProdurtos.dto.ProdutoDTO;
 import br.com.fmo.AppProdurtos.model.Produto;
 import br.com.fmo.AppProdurtos.service.ProdutoService;
 
 @RestController
-@RequestMapping("/api/produtos") //http://localhost:8080/api/produtos
+@RequestMapping("/api/produtos") //http://localhost:8081/api/produtos
 public class ProdutoResource {
 
 	private ProdutoService produtoService;
@@ -70,4 +72,12 @@ public class ProdutoResource {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT); //status code 204
 	}
 	
+	@GetMapping("/findProdutosAndQuantidade")
+	public ResponseEntity<List<ProdutoDTO>> findProdutosAndQuantidade(){
+		List<ProdutoDTO> listProdutoDTO = produtoService.findProdutosAndQuantidade();
+		if(listProdutoDTO == null)
+			return ResponseEntity.notFound().build();
+		return ResponseEntity.ok(listProdutoDTO);
+	}
+		
 }

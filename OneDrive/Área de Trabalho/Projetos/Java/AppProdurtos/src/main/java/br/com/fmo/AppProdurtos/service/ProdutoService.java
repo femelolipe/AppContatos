@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.fmo.AppProdurtos.dto.ProdutoDTO;
 import br.com.fmo.AppProdurtos.model.Produto;
 import br.com.fmo.AppProdurtos.repository.ProdutoRepository;
 import br.com.fmo.AppProdurtos.service.interfaces.ProdutoServiceInterface;
@@ -53,6 +54,16 @@ public class ProdutoService implements ProdutoServiceInterface {
 	@Override
 	public void delete(Long id) {
 		produtoRepository.deleteById(id);		
+	}
+
+	@Override
+	public List<ProdutoDTO> findProdutosAndQuantidade() {
+		List<ProdutoDTO> listProdutoDTO = produtoRepository.findProdutosAndQuantidade();
+		if(listProdutoDTO.size() > 0) {
+			return listProdutoDTO;
+		}
+
+		return null;
 	}
 	
 }
