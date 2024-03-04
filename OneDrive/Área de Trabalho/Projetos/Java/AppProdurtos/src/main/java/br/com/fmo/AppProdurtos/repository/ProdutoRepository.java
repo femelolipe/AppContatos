@@ -14,5 +14,9 @@ import org.springframework.data.jpa.repository.Query;
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
 	@Query(value = "SELECT p.id, p.codigo_barras, p.nome, p.preco, e.quantidade FROM produto p INNER JOIN estoque e on p.id = e.produto_id", nativeQuery = true)
-	List<ProdutoDTO> findProdutosAndQuantidade();
+	List<Object[]> findProdutosAndQuantidade();
+	
+	@Query(value = "SELECT * FROM buscar_produtos_estoque()", nativeQuery = true)
+	List<Object[]> findProdutoSimplesAndQuantidade();
+	
 }

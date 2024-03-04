@@ -1,0 +1,30 @@
+package br.com.fmo.AppProdurtos.configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+
+@Configuration
+public class OpenApiConfig {
+	
+	@Bean
+	public OpenAPI customOpenAPI() {
+		return new OpenAPI().components(
+									new Components().addSecuritySchemes("basicScheme", 
+											new SecurityScheme().type(SecurityScheme.Type.HTTP)
+													.scheme("basic")))
+				.info(new Info()
+							.title("App de cadastro de produtos e estoque")
+							.description("Este aplicativo faz controle de cadastro de produtos, bem como o cadastro do seu respectivo estoque")
+							.contact(new Contact()
+											.name("Felipe")
+											.email("email@teste")
+											.url("http://localhost"))
+							.version("Versão 0.0.1-SNAPSHOT"));
+	}
+}

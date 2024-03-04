@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.fmo.AppProdurtos.exception.ResourceNotFoundException;
 import br.com.fmo.AppProdurtos.model.Estoque;
 import br.com.fmo.AppProdurtos.model.Produto;
 import br.com.fmo.AppProdurtos.repository.EstoqueRepository;
@@ -78,6 +79,7 @@ public class EstoqueService implements EstoqueServiceInterface {
 		if(findProduto.isPresent()) {
 			//encontrar o estoque
 			Optional<Estoque> findEstoque = estoqueRepository.findByProduto(findProduto);
+			
 			if(findEstoque.isPresent()) {				
 				//atualizar o campo quantidade
 				Estoque updateEstoque = findEstoque.get(); //setId
@@ -88,10 +90,10 @@ public class EstoqueService implements EstoqueServiceInterface {
 				//gravar
 				return estoqueRepository.save(updateEstoque);
 			}else {
-				return null;
+				throw new ResourceNotFoundException("[Estoque] Estoque não encontrado para o Produto: " + findProduto.get().getId());
 			}
 		}else {
-			return null;
+			throw new ResourceNotFoundException("[Estoque] Produto não encontrado: " + produto.getId());
 		}
 	}
 

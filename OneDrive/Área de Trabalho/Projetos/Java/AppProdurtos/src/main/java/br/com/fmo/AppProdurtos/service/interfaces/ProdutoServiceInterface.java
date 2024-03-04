@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.fmo.AppProdurtos.dto.ProdutoDTO;
+import br.com.fmo.AppProdurtos.dto.ProdutoSimplesDTO;
 import br.com.fmo.AppProdurtos.model.Produto;
 
 public interface ProdutoServiceInterface {
@@ -19,5 +20,6 @@ public interface ProdutoServiceInterface {
 		//Deletar o produto
 		void delete(Long id);
 		List<ProdutoDTO> findProdutosAndQuantidade();
+		List<ProdutoSimplesDTO> findProdutoSimplesAndQuantidade();
 	
 }

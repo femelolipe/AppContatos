@@ -1,5 +1,6 @@
 package br.com.fmo.AppProdurtos.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.fmo.AppProdurtos.dto.ProdutoDTO;
+import br.com.fmo.AppProdurtos.dto.ProdutoSimplesDTO;
 import br.com.fmo.AppProdurtos.model.Produto;
 import br.com.fmo.AppProdurtos.repository.ProdutoRepository;
 import br.com.fmo.AppProdurtos.service.interfaces.ProdutoServiceInterface;
@@ -58,12 +60,53 @@ public class ProdutoService implements ProdutoServiceInterface {
 
 	@Override
 	public List<ProdutoDTO> findProdutosAndQuantidade() {
-		List<ProdutoDTO> listProdutoDTO = produtoRepository.findProdutosAndQuantidade();
+		List<Object[]> listResult = produtoRepository.findProdutosAndQuantidade();
+		
+		List<ProdutoDTO> listProdutoDTO = new ArrayList<>();
+		for(Object[] result : listResult) {
+			ProdutoDTO produtoDTO = new ProdutoDTO();
+			produtoDTO.setId( ((Long)result[0]).longValue() );
+			produtoDTO.setCodigoBarras( (String)result[1] );
+			produtoDTO.setNome( (String)result[2] );
+			produtoDTO.setPreco( ((Double)result[3]).doubleValue() );
+			produtoDTO.setQuantidade( ((Integer)result[4]).intValue() );
+			
+			listProdutoDTO.add(produtoDTO);
+		}
+		
+		
+		//List<ProdutoDTO> listProdutoDTO = produtoRepository.findProdutosAndQuantidade();
 		if(listProdutoDTO.size() > 0) {
 			return listProdutoDTO;
 		}
-
 		return null;
+	}
+
+	@Override
+	public List<ProdutoSimplesDTO> findProdutoSimplesAndQuantidade() {
+		List<Object[]> listResult = produtoRepository.findProdutoSimplesAndQuantidade();
+		List<ProdutoSimplesDTO> listProdutoSimplesDTO = new ArrayList<>();
+		
+		listResult.forEach(result -> {
+			listProdutoSimplesDTO.add(returnProdutoSimples(result));
+		});
+		
+		if(listProdutoSimplesDTO.size() > 0) {
+			return listProdutoSimplesDTO;
+		}
+		return null;
+	}
+	
+	private ProdutoSimplesDTO returnProdutoSimples(Object[] result) {
+		ProdutoSimplesDTO produtoSimplesDTO = new ProdutoSimplesDTO();
+		if(result != null) {
+			produtoSimplesDTO.setId( ((Long)result[0]).longValue() );
+			produtoSimplesDTO.setCodigoBarras( (String)result[1] );
+			produtoSimplesDTO.setPreco(( (Double)result[2]).doubleValue() );
+			produtoSimplesDTO.setQuantidade( ((Integer)result[3]).intValue() );
+			
+		}
+		return produtoSimplesDTO;
 	}
 	
 }

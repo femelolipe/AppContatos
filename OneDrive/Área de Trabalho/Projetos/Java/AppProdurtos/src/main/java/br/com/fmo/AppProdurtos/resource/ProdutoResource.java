@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fmo.AppProdurtos.dto.ProdutoDTO;
+import br.com.fmo.AppProdurtos.dto.ProdutoSimplesDTO;
 import br.com.fmo.AppProdurtos.model.Produto;
 import br.com.fmo.AppProdurtos.service.ProdutoService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/api/produtos") //http://localhost:8081/api/produtos
@@ -32,6 +34,7 @@ public class ProdutoResource {
 		this.produtoService = produtoService;		
 	}
 	
+	@Operation(summary = "Buscar registros de produtos cadastrados")
 	@GetMapping
 	public ResponseEntity<List<Produto>> getAllProdutos(){
 		List<Produto> produtos = produtoService.getAll();
@@ -78,6 +81,14 @@ public class ProdutoResource {
 		if(listProdutoDTO == null)
 			return ResponseEntity.notFound().build();
 		return ResponseEntity.ok(listProdutoDTO);
+	}
+	
+	@GetMapping("/findProdutoSimplesAndQuantidade")
+	public ResponseEntity<List<ProdutoSimplesDTO>> findProdutoSimplesAndQuantidade(){
+		List<ProdutoSimplesDTO> listProdutoSimplesDTO = produtoService.findProdutoSimplesAndQuantidade();
+		if(listProdutoSimplesDTO == null)
+			return ResponseEntity.notFound().build();
+		return ResponseEntity.ok(listProdutoSimplesDTO);
 	}
 		
 }
