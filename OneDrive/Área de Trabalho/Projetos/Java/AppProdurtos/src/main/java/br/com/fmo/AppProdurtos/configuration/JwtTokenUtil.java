@@ -15,7 +15,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtTokenUtil {
 	
 	private String secret = "umSegredoMuitoLongoQueTemMaisDe256BitsParaSerSeguroComHMACSHA"; //256
-	private long validadeMilisegundos = 3600000;//1h
+	private long validadeMilisegundos = 3600000; //1h
 	
 	//criar o token
 	public String createToken(String username) {
@@ -47,9 +47,20 @@ public class JwtTokenUtil {
 			return !claims.getBody().getExpiration().before(new Date());
 		} catch (Exception e) {
 			return false;
-			// TODO: handle exception
 		}
 	}
 	
-
+	//Pegar o username do token
+	public String getUserNameFromToken(String token) {
+		try {
+			byte[] apiKeySecretByte = Base64.getEncoder().encode(secret.getBytes());			
+			Key secretKey = Keys.hmacShaKeyFor(apiKeySecretByte);
+			
+			Jws<Claims> claims = Jwts.parser().setSigningKey(apiKeySecretByte)
+					.parseClaimsJws(token);
+			return claims.getBody().getSubject();
+		} catch (Exception e) {
+			return "";
+		}
+	}
 }
