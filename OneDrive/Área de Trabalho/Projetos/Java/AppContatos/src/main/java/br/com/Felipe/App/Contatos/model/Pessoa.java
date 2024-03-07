@@ -120,7 +120,7 @@ public class Pessoa {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "id = " + this.id + "nome = " + this.nome + "endereco = " + this.endereco + "cep = " + this.cep + "cidade = " + this.cidade + "uf = " + this.uf;
+		return "id = " + this.id + "nome = " + this.nome + "endereco = " + 
+				this.endereco + "cep = " + this.cep + "cidade = " + this.cidade + "uf = " + this.uf;
 	}
 }

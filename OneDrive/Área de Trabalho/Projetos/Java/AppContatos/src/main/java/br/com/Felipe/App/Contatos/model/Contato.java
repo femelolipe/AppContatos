@@ -27,7 +27,7 @@ public class Contato {
 	 * 3 - Rede social
 	 */
 	@Column(name = "tipo_contato", nullable = false)
-	private Integer tipoContato;
+	private  Integer tipoContato;
 	@Column(name = "contato", nullable = false)
 	private String contato;
 	
@@ -80,6 +80,14 @@ public class Contato {
 
 	public void setContato(String contato) {
 		this.contato = contato;
+	}
+	
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
 	@Override
