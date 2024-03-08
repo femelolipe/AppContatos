@@ -68,7 +68,7 @@ public class ContatoService implements ContatoServiceInterface {
 
 	@Override
 	public void delete(Long id) {
-		contatoRepository.deleteById(id);
+		contatoRepository.deletePorId(id);
 	}
 
 }
