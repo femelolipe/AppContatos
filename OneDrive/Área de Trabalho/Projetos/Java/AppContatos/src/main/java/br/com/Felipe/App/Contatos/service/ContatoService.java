@@ -1,11 +1,13 @@
 package br.com.Felipe.App.Contatos.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.Felipe.App.Contatos.dto.ContatoDTO;
 import br.com.Felipe.App.Contatos.exception.ResourceNotFoundException;
 import br.com.Felipe.App.Contatos.interfaces.ContatoServiceInterface;
 import br.com.Felipe.App.Contatos.model.Contato;
@@ -64,18 +66,28 @@ public class ContatoService implements ContatoServiceInterface {
 	}
 
 	@Override
-	public List<Contato> getAll() throws ResourceNotFoundException {
-		List<Contato> listContato = contatoRepository.findAll();
+	public List<ContatoDTO> getAllContatosById(Long id) throws ResourceNotFoundException {
 		
-		if(listContato == null) {
-			throw new ResourceNotFoundException("[CONTATO] Nenhuma contato cadastrado");
-			}
+		List<Object> listResult = contatoRepository.getAllContatosById(id);
+		
+		if(listResult == null) {
+			throw new ResourceNotFoundException("[CONTATO] Dados de pessoa não encontrados pelo ID: " + id);
+		}
+		if(listResult.isEmpty()) {
+			throw new ResourceNotFoundException("[CONTATO] Dados de pessoa não encontrados pelo ID: " + id);
+		}
+		
+		List<ContatoDTO> listContatoDTO = new ArrayList<>();
+		
+		listResult.forEach(result -> {
+			listContatoDTO.add(returnContatoDTO((Object[]) result));
+		});
+		
+		if(listContatoDTO.size() > 0) {
+			return listContatoDTO;
+		}
 			
-		if(listContato.size() == 0) {
-			throw new ResourceNotFoundException("[CONTATO] Nenhuma contato cadastrado");
-			}
-			
-		return listContato;
+		return null;
 	}
 
 	@Override
@@ -125,6 +137,20 @@ public class ContatoService implements ContatoServiceInterface {
 		}
 		
 		contatoRepository.deletePorId(id);
+	}
+	
+	private ContatoDTO returnContatoDTO(Object[] result) {		
+		ContatoDTO contatoDTO = new ContatoDTO();
+		
+		if(result != null) {
+			contatoDTO.setIdPessoa( ((Long)result[0]).longValue() );			
+			contatoDTO.setIdContato( ((Long)result[1]).longValue() );
+			contatoDTO.setNome( (String)result[2] );
+			contatoDTO.setContato( (String)result[3] );
+			contatoDTO.setTipoContato( (String)result[4] );
+		}
+		
+		return contatoDTO;
 	}
 
 }

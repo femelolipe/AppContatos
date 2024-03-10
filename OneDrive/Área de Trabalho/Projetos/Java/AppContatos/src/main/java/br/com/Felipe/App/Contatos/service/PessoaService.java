@@ -11,12 +11,16 @@ import br.com.Felipe.App.Contatos.dto.PessoaDTO;
 import br.com.Felipe.App.Contatos.exception.ResourceNotFoundException;
 import br.com.Felipe.App.Contatos.interfaces.PessoaServicoInterface;
 import br.com.Felipe.App.Contatos.model.Pessoa;
+import br.com.Felipe.App.Contatos.repository.ContatoRepository;
 import br.com.Felipe.App.Contatos.repository.PessoaRepository;
 
 @Service
 public class PessoaService implements PessoaServicoInterface {
 
 	private PessoaRepository pessoaRepository;
+	
+	@Autowired
+	private ContatoRepository contatoRepository;
 	
 	@Autowired
 	public PessoaService(PessoaRepository pessoaRepository) {
@@ -112,7 +116,7 @@ public class PessoaService implements PessoaServicoInterface {
 	}
 	
 	@Override
-	public List<PessoaDTO> findMalaDireta(Long id){
+	public List<PessoaDTO> findMalaDireta(Long id) throws ResourceNotFoundException {
 				
 		List<Object[]> listResult = pessoaRepository.findMalaDireta(id);
 		

@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.Felipe.App.Contatos.dto.ContatoDTO;
+import br.com.Felipe.App.Contatos.dto.PessoaDTO;
 import br.com.Felipe.App.Contatos.model.Contato;
+import br.com.Felipe.App.Contatos.model.Pessoa;
 import br.com.Felipe.App.Contatos.service.ContatoService;
+import br.com.Felipe.App.Contatos.service.PessoaService;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
@@ -58,18 +62,20 @@ public class ContatoResource {
 	}
 	
 	@Operation(summary = "Buscar todos os dados de contato cadastrados")
-	@RequestMapping("/all")
-	public ResponseEntity<List<Contato>> getAll(){
-		List<Contato> findContato = contatoService.getAll();
+	@RequestMapping("/buscaPorPessoa/{id}")
+	public ResponseEntity<List<ContatoDTO>> getAllContatosById(Long id){
 		
-		if(findContato == null) {
+						
+		List<ContatoDTO> listContatoDTO = contatoService.getAllContatosById(id);
+		
+		if(listContatoDTO == null) {
 			return ResponseEntity.notFound().build();
 		}
-		if(findContato.size() == 0) {
+		if(listContatoDTO.size() == 0) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(findContato);
+		return ResponseEntity.ok(listContatoDTO);
 	}
 	
 	@Operation(summary = "Atualizar os dados de contato de uma pessoa")
